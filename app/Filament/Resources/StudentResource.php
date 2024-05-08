@@ -23,7 +23,15 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('class_id')
+                    ->relationship('class', 'name'),
+//                Forms\Components\Select::make('section_id')
+//                    ->relationship('section', 'name'),
+                Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\TextInput::make('email')
+                    ->unique()
+                    ->required()
             ]);
     }
 
