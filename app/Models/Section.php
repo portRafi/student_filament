@@ -14,12 +14,12 @@ class Section extends Model
         'name',
     ];
 
-    public function classes()
+    public function class()
     {
         return $this->belongsTo(Classes::class);
     }
 
-    public function student()
+    public function students()
     {
         return $this->hasMany(Student::class);
     }
