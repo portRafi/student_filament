@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Exports\StudentExport;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\Section;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,6 +14,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Collection;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentResource extends Resource
 {
@@ -24,9 +28,20 @@ class StudentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('class_id')
+                    ->live()
                     ->relationship('class', 'name'),
-//                Forms\Components\Select::make('section_id')
-//                    ->relationship('section', 'name'),
+                Forms\Components\Select::make('section_id')
+                    ->label('Section')
+                    ->options(function (Forms\Get $get) {
+                        $classId = $get('class_id');
+
+                        if ($classId) {
+                            return Section::query()
+                                ->where('class_id', $classId)
+                                ->pluck('name', 'id')
+                                ->toArray();
+                        }
+                    }),
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\TextInput::make('email')
@@ -63,6 +78,12 @@ class StudentResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('export')
+                        ->label('Export to Excel')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            return Excel::download(new StudentExport($records), 'students.xlsx');
+                        })
                 ]),
             ]);
     }
