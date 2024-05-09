@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Exports\StudentExport;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\Classes;
 use App\Models\Section;
 use App\Models\Student;
 use Filament\Forms;
@@ -70,7 +71,36 @@ class StudentResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('class-section-filter')
+                    ->form([
+                        Forms\Components\Select::make('class_id')
+                            ->label('Filter By Class')
+                            ->placeholder('Select a Class')
+                            ->options([
+                                Classes::query()
+                                    ->pluck('name', 'id')
+                                    ->toArray()
+                            ]),
+                        Forms\Components\Select::make('section_id')
+                            ->label('Filter By Section')
+                            ->placeholder('Select a Section')
+                            ->options(function (Forms\Get $get) {
+                                $classId = $get('class_id');
+
+                                if ($classId) {
+                                    return Section::query()
+                                        ->where('class_id', $classId)
+                                        ->pluck('name', 'id');
+                                }
+                            })
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when($data['class_id'], function ($query) use ($data) {
+                            return $query->where('class_id', $data['class_id']);
+                        })->when($data['section_id'], function ($query) use ($data) {
+                            return $query->where('section_id', $data['section_id']);
+                        });
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
