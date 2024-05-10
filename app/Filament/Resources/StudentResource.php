@@ -12,6 +12,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -110,6 +111,10 @@ class StudentResource extends Resource
                     }),
             ])
             ->actions([
+                Action::make('downloadPdf')
+                    ->url(function (Student $student) {
+                        return route('student.invoice.generate', $student);
+                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
