@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 
+
+
 class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
@@ -120,6 +122,7 @@ class StudentResource extends Resource
                         return static::getUrl('qrCode', ['record' => $record]);
                     }),
                 Tables\Actions\EditAction::make(),
+                
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

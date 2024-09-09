@@ -13,7 +13,7 @@ class InvoiceController extends Controller
 {
     public function generatePdf(Student $student)
     {
-        $customer = new Buyer([
+        $customer = new buyer([
             'name' => $student->name,
             'custom_fields' => [
                 'email' => $student->email,
