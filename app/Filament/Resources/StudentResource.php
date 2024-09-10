@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Facades\Excel;
 
 
-
 class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
