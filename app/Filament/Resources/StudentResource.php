@@ -26,7 +26,7 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static ?string $navigationGroup = 'Academic Management';
+    protected static ?string $navigationGroup = 'Management Academic ';
 
     public static function getNavigationBadge(): ?string
     {
