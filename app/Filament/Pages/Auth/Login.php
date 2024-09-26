@@ -37,6 +37,7 @@ class Login extends \Filament\Pages\Auth\Login
         return [
             'username' => $data['username'],
             'password' => $data['password'],
+            NamaWidget::class,
         ];
     }
 }
