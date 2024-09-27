@@ -14,7 +14,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ClassesResource extends Resource
-{
+{   
+    protected static ?string $navigationParentItem = 'Notifications';
+    
     protected static ?string $model = Classes::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-percent-badge';
