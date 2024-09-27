@@ -22,6 +22,9 @@ use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use App\Livewire\CustomProfileComponent;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Filament\Navigation\MenuItem;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
+
 
 
 class AdminPanelProvider extends PanelProvider
@@ -36,6 +39,10 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Filament Demo')
             ->font('Poppins')
             ->login()
+            ->renderHook(
+                PanelsRenderHook::BODY_START,
+                fn (): string => Blade::render('@livewire(\'livewire-ui-modal\')'),
+            )
             ->colors([
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
