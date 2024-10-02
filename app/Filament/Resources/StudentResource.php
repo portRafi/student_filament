@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Facades\Excel;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 
 
 class StudentResource extends Resource
@@ -125,7 +125,6 @@ class StudentResource extends Resource
                 
             ])
             ->bulkActions([
-                ExportBulkAction::make(),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('export')
